@@ -15,7 +15,7 @@ Construir una aplicación web que facilite la planificación y gestión de tarea
 - Java
 - Spring Boot
 
-## Estructura del proyecto-Actualmente
+## Estructura del Proyecto (Sprint 1)
 
 ```text
 task-planner/
