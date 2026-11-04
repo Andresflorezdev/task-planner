@@ -1,0 +1,379 @@
+/* Variables de tema */
+:root {
+    --bg-body: #202020;
+    --bg-sidebar: #292929;
+    --bg-card: #303030;
+    --bg-card-hover: #383838;
+    --border-color: #454545;
+    --border-color-hover: #5a5a5a;
+    --primary-purple: #6255c7;
+    --text-primary: #e8e8e8;
+    --text-secondary: #b5b5b5;
+    --text-muted: #858585;
+    --border-radius-xl: 8px;
+    --border-radius-lg: 6px;
+    --border-radius-sm: 4px;
+    --transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Base */
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Header */
+.app-header {
+    background-color: var(--bg-sidebar);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.9rem 1.75rem;
+}
+
+.brand-icon-box {
+    width: 34px;
+    height: 34px;
+    background-color: var(--primary-purple);
+    color: #fff;
+    border-radius: var(--border-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+}
+
+.brand-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.theme-switch-wrapper .form-check-input {
+    background-color: var(--border-color);
+    border-color: var(--text-muted);
+    cursor: pointer;
+    width: 2.2em;
+    height: 1.2em;
+}
+
+.account-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition);
+}
+
+.account-link:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-card);
+}
+
+/* Layout y Panel Central */
+.app-layout {
+    min-height: calc(100vh - 65px);
+    padding: 1.25rem 1.5rem;
+}
+
+.center-board {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+/* Panel Central y Botón Nueva Tarea */
+.btn-new-task {
+    background-color: var(--primary-purple);
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: var(--border-radius-md);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-new-task:hover {
+    background-color: #5345b5;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Buscador */
+.input-group-text,
+.form-control {
+    background-color: var(--bg-sidebar);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-control:focus {
+    background-color: var(--bg-sidebar);
+    border-color: var(--border-color-hover);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+/* Tarjetas de Tareas */
+.task-card {
+    background-color: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-primary);
+    min-height: 175px;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+    border-color: var(--border-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.task-card .card-body {
+    padding: 1.25rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.task-card .card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0.25rem 0 0.45rem;
+}
+
+.task-card .task-desc {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin-bottom: 0.85rem;
+}
+
+.task-card .task-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.task-card .task-meta span {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.task-card .form-check-input {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    cursor: pointer;
+    width: 1.15em;
+    height: 1.15em;
+    margin: 0;
+}
+
+.theme-switch-wrapper .form-check-input:checked,
+.task-card .form-check-input:checked {
+    background-color: var(--primary-purple);
+    border-color: transparent;
+}
+
+/* Widgets Laterales */
+.widgets-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.widget-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem;
+}
+
+.widget-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.widget-title i {
+    color: var(--primary-purple);
+}
+
+/* Clima */
+.weather-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.weather-icon {
+    font-size: 2rem;
+    color: #d6d6d6;
+}
+
+.weather-degrees {
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.weather-condition {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.7rem;
+}
+
+.weather-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+/* Progreso */
+.progress-stats {
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-bottom: 0.65rem;
+}
+
+.custom-progress {
+    height: 8px;
+    background-color: #484848;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+}
+
+.custom-progress .progress-bar {
+    background-color: var(--primary-purple);
+}
+
+.progress-pct {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Próximas Tareas y Consejo */
+.next-tasks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.next-tasks-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.next-tasks-item i {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.quote-text {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.45;
+}
+
+/* Modal de Nueva Tarea */
+.custom-modal {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    color: var(--text-primary);
+}
+
+.custom-modal .form-control,
+.custom-modal .form-select {
+    background-color: var(--bg-sidebar);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.custom-modal .form-control:focus,
+.custom-modal .form-select:focus {
+    background-color: var(--bg-sidebar);
+    border-color: var(--border-color-hover);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+.custom-modal input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+    cursor: pointer;
+}
+
+.btn-save-task {
+    background-color: var(--primary-purple);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.65rem;
+    border-radius: var(--border-radius-md);
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-save-task:hover {
+    background-color: #5345b5;
+    color: #fff;
+}
