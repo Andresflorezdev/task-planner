@@ -146,50 +146,62 @@ body {
     box-shadow: none;
 }
 
-/* Tarjetas de Tareas */
-.task-card {
-    background-color: var(--bg-sidebar);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    color: var(--text-primary);
-    min-height: 175px;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.task-card:hover {
-    border-color: var(--border-color-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-}
-
-.task-card .card-body {
-    padding: 1.25rem 1.35rem;
+/* Tareas en formato de lista */
+.task-list {
     display: flex;
     flex-direction: column;
+}
+
+.task-list-item {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.task-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1rem 0.25rem;
+    color: var(--text-primary);
+    transition: background-color 0.2s ease;
+}
+
+.task-row:hover {
+    background-color: var(--bg-card-hover);
+}
+
+.task-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-heading {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    height: 100%;
+    gap: 1rem;
 }
 
-.task-card .card-title {
-    font-size: 1.05rem;
+.task-title {
+    font-size: 1rem;
     font-weight: 600;
-    margin: 0.25rem 0 0.45rem;
+    margin: 0;
+    overflow-wrap: anywhere;
 }
 
-.task-card .task-desc {
+.task-row .task-desc {
     color: var(--text-secondary);
     font-size: 0.88rem;
     line-height: 1.45;
-    margin-bottom: 0.85rem;
+    margin: 0.35rem 0 0.65rem;
 }
 
-.task-card .task-meta {
+.task-meta {
     display: flex;
     align-items: center;
     gap: 1.25rem;
 }
 
-.task-card .task-meta span {
+.task-meta span {
     color: var(--text-secondary);
     font-size: 0.85rem;
     display: inline-flex;
@@ -197,19 +209,43 @@ body {
     gap: 0.4rem;
 }
 
-.task-card .form-check-input {
+.task-row .form-check-input {
     background-color: var(--bg-card);
     border-color: var(--border-color);
     cursor: pointer;
+    flex: 0 0 auto;
     width: 1.15em;
     height: 1.15em;
-    margin: 0;
+    margin: 0.2rem 0 0;
 }
 
 .theme-switch-wrapper .form-check-input:checked,
-.task-card .form-check-input:checked {
+.task-row .form-check-input:checked {
     background-color: var(--primary-purple);
     border-color: transparent;
+}
+
+@media (max-width: 575.98px) {
+    .app-header {
+        padding: 0.8rem 1rem;
+    }
+
+    .brand-title {
+        font-size: 1rem;
+    }
+
+    .header-actions {
+        gap: 0.75rem;
+    }
+
+    .task-heading {
+        align-items: flex-start;
+    }
+
+    .task-meta {
+        flex-wrap: wrap;
+        gap: 0.65rem 1rem;
+    }
 }
 
 /* Widgets Laterales */
