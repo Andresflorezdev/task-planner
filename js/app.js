@@ -50,6 +50,8 @@ formularioNuevaTarea.addEventListener('submit', function (event) {
         completada: false
     };
 
+    console.log("name: " + datosTarea.nombre);
+
     const esValido = validacionFormularioInput(datosTarea)
     if (!esValido) {
         alertaError.classList.remove('d-none');
@@ -58,7 +60,6 @@ formularioNuevaTarea.addEventListener('submit', function (event) {
     alertaError.classList.add('d-none');
 
     tareas.push(datosTarea);
-    console.log(JSON.stringify(tareas, null, 2));
 
     renderizarTareas();
 
@@ -67,15 +68,6 @@ formularioNuevaTarea.addEventListener('submit', function (event) {
     const elementoModal = document.querySelector("#newTaskModal");
     const instanciaModal = bootstrap.Modal.getInstance(elementoModal);
     if (instanciaModal) {
-        const botonNuevaTarea = document.querySelector('[data-bs-target="#newTaskModal"]');
-        elementoModal.addEventListener('hidden.bs.modal', function devolverFoco() {
-            botonNuevaTarea.focus();
-        }, { once: true });
-
-        if (elementoModal.contains(document.activeElement)) {
-            document.activeElement.blur();
-        }
-
         instanciaModal.hide();
     }
 });
