@@ -4,22 +4,19 @@ let tareas = [
         nombre: "Rediseño de interfaz de usuario",
         descripcion: "Actualizar los componentes visuales del dashboard principal según la nueva guía de estilos.",
         fecha: "2026-10-15",
-        categoria: "Urgente",
-        completada: false
+        categoria: "Urgente"
     },
     {
         nombre: "Integración de API REST",
         descripcion: "Configurar los endpoints de autenticación y consumo de datos con tokens seguros de acceso.",
         fecha: "2026-10-16",
-        categoria: "Estudio",
-        completada: false
+        categoria: "Estudio"
     },
     {
         nombre: "Optimización de consultas",
         descripcion: "Revisar peticiones lentas en la base de datos y optimizar la carga para mejorar tiempos de respuesta.",
         fecha: "2026-10-18",
-        categoria: "Urgente",
-        completada: false
+        categoria: "Urgente"
     }
 ];
 
@@ -46,8 +43,7 @@ formularioNuevaTarea.addEventListener('submit', function (event) {
         nombre: nombreInput.value,
         descripcion: descripcionInput.value,
         fecha: fechaInput.value,
-        categoria: categoriaInput.value,
-        completada: false
+        categoria: categoriaInput.value
     };
 
     const esValido = validacionFormularioInput(datosTarea)
@@ -99,54 +95,22 @@ function renderizarTareas() {
         const columnaTarea = document.createElement('div');
         columnaTarea.className = 'task-list-item';
 
-        const fila = document.createElement('div');
-        fila.className = 'task-row';
-
-        const casilla = document.createElement('input');
-        casilla.type = 'checkbox';
-        casilla.className = 'form-check-input';
-        casilla.checked = Boolean(tarea.completada);
-        casilla.setAttribute('aria-label', `Marcar ${tarea.nombre} como completada`);
-        casilla.addEventListener('change', () => {
-            tarea.completada = casilla.checked;
-        });
-
-        const contenido = document.createElement('div');
-        contenido.className = 'task-content';
-
-        const encabezado = document.createElement('div');
-        encabezado.className = 'task-heading';
-
-        const titulo = document.createElement('h5');
-        titulo.className = 'task-title';
-        titulo.textContent = tarea.nombre;
-
-        const etiqueta = document.createElement('span');
-        etiqueta.className = `badge ${claseEtiqueta}`;
-        etiqueta.textContent = tarea.categoria;
-
-        const descripcion = document.createElement('p');
-        descripcion.className = 'task-desc';
-        descripcion.textContent = tarea.descripcion;
-
-        const meta = document.createElement('div');
-        meta.className = 'task-meta';
-
-        const fecha = document.createElement('span');
-        const iconoFecha = document.createElement('i');
-        iconoFecha.className = 'bi bi-calendar3';
-        fecha.append(iconoFecha, document.createTextNode(tarea.fecha));
-
-        const responsable = document.createElement('span');
-        const iconoResponsable = document.createElement('i');
-        iconoResponsable.className = 'bi bi-person';
-        responsable.append(iconoResponsable, document.createTextNode('Andres F.'));
-
-        encabezado.append(titulo, etiqueta);
-        meta.append(fecha, responsable);
-        contenido.append(encabezado, descripcion, meta);
-        fila.append(casilla, contenido);
-        columnaTarea.appendChild(fila);
+        columnaTarea.innerHTML = `
+        <div class="task-row">
+            <input type="checkbox" class="form-check-input" aria-label="Marcar ${tarea.nombre} como completada">
+            <div class="task-content">
+                <div class="task-heading">
+                    <h5 class="task-title">${tarea.nombre}</h5>
+                    <span class="badge ${claseEtiqueta}">${tarea.categoria}</span>
+                </div>
+                <p class="task-desc">${tarea.descripcion}</p>
+                <div class="task-meta">
+                    <span><i class="bi bi-calendar3"></i>${tarea.fecha}</span>
+                    <span><i class="bi bi-person"></i>Andres F.</span>
+                </div>
+            </div>
+        </div>
+        `;
 
         contenedorTareas.appendChild(columnaTarea);
     });
