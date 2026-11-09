@@ -219,6 +219,13 @@ body {
     margin: 0.2rem 0 0;
 }
 
+/* estilo para las tareas completadas */
+.task-completed .task-title,
+.task-completed .task-desc {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
 .theme-switch-wrapper .form-check-input:checked,
 .task-row .form-check-input:checked {
     background-color: var(--primary-purple);
