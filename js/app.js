@@ -130,6 +130,13 @@ function renderizarTareas() {
         </div>
         `;
 
+        // marcar tarea como completada
+        const checkbox = columnaTarea.querySelector(".form-check-input");
+
+        checkbox.addEventListener("change", function () {
+            columnaTarea.classList.toggle("task-completed", checkbox.checked);
+        })
+
         contenedorTareas.appendChild(columnaTarea);
     });
 }
