@@ -35,6 +35,9 @@ formularioNuevaTarea.addEventListener('submit', function (event) {
         datosTarea.categoria
     );
 
+    console.info('Tarea registrada. Estado actual de TaskManager:');
+    console.table(taskManager.tasks);
+
     renderizarTareas();
 
     formularioNuevaTarea.reset();

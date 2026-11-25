@@ -49,3 +49,6 @@ tareasIniciales.forEach((tarea) => {
         tarea.categoria
     );
 });
+
+console.info('Tareas cargadas en TaskManager:');
+console.table(taskManager.tasks);
