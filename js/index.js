@@ -1,4 +1,5 @@
 const taskManager = new TaskManager();
+const TASKS_STORAGE_KEY = 'taskPlannerTasks';
 
 // Tareas de prueba existentes: se conservan y se cargan en TaskManager.
 const tareasIniciales = [
@@ -40,15 +41,45 @@ const tareasIniciales = [
     }
 ];
 
-tareasIniciales.forEach((tarea) => {
-    taskManager.addTask(
-        tarea.nombre,
-        tarea.descripcion,
-        tarea.fecha,
-        'PORHACER',
-        tarea.categoria
-    );
-});
+function saveTasks() {
+    taskManager.save();
+}
+
+function loadTasks() {
+    const savedTasks = localStorage.getItem(TASKS_STORAGE_KEY);
+
+    if (savedTasks) {
+        try {
+            taskManager.tasks = JSON.parse(savedTasks);
+            taskManager.currentId = taskManager.tasks.reduce(function (highestId, task) {
+                if (task.id > highestId) {
+                    return task.id;
+                }
+                return highestId;
+            }, 0);
+        } catch (error) {
+            localStorage.removeItem(TASKS_STORAGE_KEY);
+            loadInitialTasks();
+        }
+    } else {
+        loadInitialTasks();
+        saveTasks();
+    }
+}
+
+function loadInitialTasks() {
+    tareasIniciales.forEach(function (tarea) {
+        taskManager.addTask(
+            tarea.nombre,
+            tarea.descripcion,
+            tarea.fecha,
+            'PORHACER',
+            tarea.categoria
+        );
+    });
+}
+
+loadTasks();
 
 console.info('Tareas cargadas en TaskManager:');
 console.table(taskManager.tasks);
