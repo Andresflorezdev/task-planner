@@ -232,6 +232,70 @@ body {
     border-color: transparent;
 }
 
+.btn-delete-task {
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgba(220, 53, 69, 0.45);
+    border-radius: var(--border-radius-sm);
+    color: #ff8a96;
+    font-size: 0.82rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.is-completed .btn-delete-task {
+    display: inline-flex;
+}
+
+.btn-delete-task:hover,
+.btn-delete-task:focus-visible {
+    background-color: rgba(220, 53, 69, 0.14);
+    border-color: #dc3545;
+    color: #ffb0b8;
+}
+
+.delete-modal-copy {
+    color: var(--text-secondary);
+    margin: 0.9rem 0 0.4rem;
+    overflow-wrap: anywhere;
+}
+
+.delete-modal-copy strong {
+    color: var(--text-primary);
+}
+
+.delete-modal-note {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.btn-cancel-delete {
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-cancel-delete:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-card-hover);
+    border-color: var(--border-color-hover);
+}
+
+.btn-confirm-delete {
+    color: #fff;
+    background-color: #b02a37;
+    border: 1px solid #b02a37;
+}
+
+.btn-confirm-delete:hover,
+.btn-confirm-delete:focus-visible {
+    color: #fff;
+    background-color: #92232e;
+    border-color: #92232e;
+}
+
 @media (max-width: 575.98px) {
     .app-header {
         padding: 0.8rem 1rem;

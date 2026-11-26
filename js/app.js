@@ -1,14 +1,31 @@
 const formularioNuevaTarea = document.querySelector("#newTaskForm");
 const alertaError = document.querySelector("#alertError");
 const contenedorTareas = document.querySelector("#taskContainer");
+const campoFechaTarea = document.querySelector("#newTaskDateInput");
+
+function obtenerFechaActual() {
+    const fechaActual = new Date();
+    const anio = fechaActual.getFullYear();
+    const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+    const dia = String(fechaActual.getDate()).padStart(2, '0');
+
+    return anio + '-' + mes + '-' + dia;
+}
+
+campoFechaTarea.min = obtenerFechaActual();
 
 function validarTarea(tarea) {
-    return Boolean(
-        tarea.nombre.trim() &&
-        tarea.descripcion.trim() &&
-        tarea.fecha.trim() &&
-        tarea.categoria.trim()
-    );
+    if (!tarea.nombre.trim() || !tarea.descripcion.trim() || !tarea.fecha.trim() || !tarea.categoria.trim()) {
+        alertaError.textContent = 'Por favor, completa todos los campos correctamente.';
+        return false;
+    }
+
+    if (tarea.fecha < obtenerFechaActual()) {
+        alertaError.textContent = 'La fecha límite no puede ser anterior a la fecha actual.';
+        return false;
+    }
+
+    return true;
 }
 
 formularioNuevaTarea.addEventListener('submit', function (event) {
@@ -39,6 +56,7 @@ formularioNuevaTarea.addEventListener('submit', function (event) {
     console.table(taskManager.tasks);
 
     renderizarTareas();
+    saveTasks();
 
     formularioNuevaTarea.reset();
 
@@ -61,7 +79,7 @@ formularioNuevaTarea.addEventListener('submit', function (event) {
 function renderizarTareas() {
     contenedorTareas.innerHTML = '';
 
-    taskManager.tasks.forEach((tarea) => {
+    taskManager.tasks.slice().reverse().forEach((tarea) => {
         let claseEtiqueta = 'bg-secondary';
 
         if (tarea.category === 'Urgente') {
@@ -76,6 +94,7 @@ function renderizarTareas() {
 
         const columnaTarea = document.createElement('div');
         columnaTarea.className = 'task-list-item';
+        columnaTarea.dataset.taskId = tarea.id;
 
         columnaTarea.innerHTML = `
         <div class="task-row">
@@ -90,6 +109,10 @@ function renderizarTareas() {
                     <span><i class="bi bi-calendar3"></i>${tarea.dueDate}</span>
                     <span><i class="bi bi-person"></i>Andres F.</span>
                 </div>
+                <button type="button" class="btn btn-delete-task delete-button" aria-label="Eliminar ${tarea.name}">
+                    <i class="bi bi-trash3"></i>
+                    <span>Eliminar</span>
+                </button>
             </div>
         </div>
         `;
@@ -99,12 +122,71 @@ function renderizarTareas() {
         columnaTarea.querySelector('.badge').textContent = tarea.category;
 
         const checkbox = columnaTarea.querySelector('.form-check-input');
+        if (tarea.status === 'COMPLETADA') {
+            checkbox.checked = true;
+        }
+
         checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                taskManager.setTaskStatus(tarea.id, 'COMPLETADA');
+            } else {
+                taskManager.setTaskStatus(tarea.id, 'PORHACER');
+            }
+
             columnaTarea.classList.toggle('task-completed', checkbox.checked);
+            columnaTarea.classList.toggle('is-completed', checkbox.checked);
+            saveTasks();
         });
+
+        if (tarea.status === 'COMPLETADA') {
+            columnaTarea.classList.add('task-completed');
+            columnaTarea.classList.add('is-completed');
+        }
 
         contenedorTareas.appendChild(columnaTarea);
     });
 }
+
+contenedorTareas.addEventListener('click', function (event) {
+    const deleteButton = event.target.closest('.delete-button');
+
+    if (!deleteButton) {
+        return;
+    }
+
+    const taskCard = deleteButton.closest('[data-task-id]');
+
+    if (!taskCard) {
+        return;
+    }
+
+    const taskId = Number(taskCard.dataset.taskId);
+    const task = taskManager.tasks.find(function (currentTask) {
+        return currentTask.id === taskId;
+    });
+
+    if (!task) {
+        return;
+    }
+
+    if (task.status !== 'COMPLETADA') {
+        return;
+    }
+
+    document.querySelector('#deleteTaskName').textContent = task.name;
+    document.querySelector('#confirmDeleteTask').dataset.taskId = taskId;
+    const deleteModal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#deleteTaskModal'));
+    deleteModal.show();
+});
+
+document.querySelector('#confirmDeleteTask').addEventListener('click', function (event) {
+    const taskId = Number(event.currentTarget.dataset.taskId);
+
+    if (taskManager.deleteTask(taskId)) {
+        saveTasks();
+        renderizarTareas();
+        bootstrap.Modal.getInstance(document.querySelector('#deleteTaskModal')).hide();
+    }
+});
 
 renderizarTareas();

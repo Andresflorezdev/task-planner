@@ -180,6 +180,28 @@
         </div>
     </div>
 
+    <!-- Modal para confirmar la eliminación de una tarea completada -->
+    <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal delete-modal">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body pt-3">
+                    <h2 class="modal-title fs-5 fw-bold" id="deleteTaskModalLabel">Eliminar tarea</h2>
+                    <p class="delete-modal-copy">La tarea <strong id="deleteTaskName"></strong> se eliminará permanentemente.</p>
+                    <p class="delete-modal-note">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-cancel-delete" data-bs-dismiss="modal">Conservar tarea</button>
+                    <button type="button" class="btn btn-confirm-delete" id="confirmDeleteTask">
+                        Eliminar tarea
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/taskManager.js"></script>
     <script src="js/index.js"></script>
