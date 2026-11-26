@@ -36,10 +36,14 @@ task-planner/
 ```text
 task-planner/
 ├── css/
-│   └── styles.css
+│   ├── modals.css
+│   └── style.css
+├── html/
+│   └── modals.html
 ├── js/
 │   ├── app.js
 │   ├── index.js
+│   ├── inicializar.js
 │   └── taskManager.js
 └── index.html
 ```
@@ -50,10 +54,14 @@ task-planner/
 - `TaskManager` conserva `currentId` para asignar un identificador consecutivo a cada tarea.
 - El método `addTask(name, description, dueDate, status, category)` registra una tarea y devuelve el objeto creado.
 - Las tareas nuevas comienzan con el estado `PORHACER`.
-- Las seis tareas de prueba del proyecto se conservan y se cargan en `TaskManager` desde `js/index.js` al iniciar la página.
-- El formulario de `index.html` se valida y se procesa desde `js/app.js`; después de registrar una tarea, la lista se vuelve a dibujar y el formulario se limpia.
-- La lista visible se genera desde `taskManager.tasks`. Las tarjetas muestran nombre, descripción, fecha y categoría.
-- Los datos se guardan solo en memoria: al recargar la página vuelven a cargarse las seis tareas de prueba y se pierden las tareas agregadas durante la sesión.
+- El método `deleteTask(taskId)` elimina una tarea filtrando por identificador, permitiendo borrar tareas creadas por error o tareas completadas.
+- Los métodos `save()` y `render()` en `TaskManager` gestionan la persistencia en `localStorage` y la actualización visual de la lista.
+- Las seis tareas de prueba del proyecto se conservan y se cargan en `TaskManager` desde `js/index.js` al iniciar la página por primera vez.
+- La persistencia en `localStorage` mantiene las tareas agregadas, completadas o eliminadas incluso al recargar el navegador.
+- El formulario de registro se valida y procesa desde `js/app.js`; tras registrar una tarea, se actualiza la vista y se persiste en almacenamiento local.
+- Las tarjetas truncan la descripción a un máximo de tres líneas para conservar una interfaz limpia y uniforme.
+- Cada tarjeta incluye un botón "Ver tarea" para abrir un modal con la información detallada completa y un botón "Eliminar" con confirmación previa.
+- Los componentes modales se desacoplaron en `html/modals.html` y `css/modals.css`, y son cargados asíncronamente mediante `js/inicializar.js`.
 
 ### Ver las tareas en la consola del navegador
 
