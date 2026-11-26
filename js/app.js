@@ -1,7 +1,6 @@
-const formularioNuevaTarea = document.querySelector("#newTaskForm");
-const alertaError = document.querySelector("#alertError");
+import { cargarModales, inicializarModales } from './inicializar.js';
+
 const contenedorTareas = document.querySelector("#taskContainer");
-const campoFechaTarea = document.querySelector("#newTaskDateInput");
 
 function obtenerFechaActual() {
     const fechaActual = new Date();
@@ -12,9 +11,7 @@ function obtenerFechaActual() {
     return anio + '-' + mes + '-' + dia;
 }
 
-campoFechaTarea.min = obtenerFechaActual();
-
-function validarTarea(tarea) {
+function validarTarea(tarea, alertaError) {
     if (!tarea.nombre.trim() || !tarea.descripcion.trim() || !tarea.fecha.trim() || !tarea.categoria.trim()) {
         alertaError.textContent = 'Por favor, completa todos los campos correctamente.';
         return false;
@@ -28,53 +25,34 @@ function validarTarea(tarea) {
     return true;
 }
 
-formularioNuevaTarea.addEventListener('submit', function (event) {
-    event.preventDefault();
+async function iniciarModales() {
+    await cargarModales();
 
-    const datosTarea = {
-        nombre: document.querySelector("#newTaskNameInput").value,
-        descripcion: document.querySelector("#newTaskDescInput").value,
-        fecha: document.querySelector("#newTaskDateInput").value,
-        categoria: document.querySelector("#newTaskCategoryInput").value
-    };
+    inicializarModales({
+        fechaMinima: obtenerFechaActual(),
+        validarTarea: validarTarea,
+        onCrearTarea: function (datosTarea) {
+            taskManager.addTask(
+                datosTarea.nombre.trim(),
+                datosTarea.descripcion.trim(),
+                datosTarea.fecha,
+                'PORHACER',
+                datosTarea.categoria
+            );
 
-    if (!validarTarea(datosTarea)) {
-        alertaError.classList.remove('d-none');
-        return;
-    }
+            console.info('Tarea registrada. Estado actual de TaskManager:');
+            console.table(taskManager.tasks);
 
-    alertaError.classList.add('d-none');
-    taskManager.addTask(
-        datosTarea.nombre.trim(),
-        datosTarea.descripcion.trim(),
-        datosTarea.fecha,
-        'PORHACER',
-        datosTarea.categoria
-    );
-
-    console.info('Tarea registrada. Estado actual de TaskManager:');
-    console.table(taskManager.tasks);
-
-    renderizarTareas();
-    saveTasks();
-
-    formularioNuevaTarea.reset();
-
-    const elementoModal = document.querySelector("#newTaskModal");
-    const instanciaModal = bootstrap.Modal.getInstance(elementoModal);
-    if (instanciaModal) {
-        const botonNuevaTarea = document.querySelector('[data-bs-target="#newTaskModal"]');
-        elementoModal.addEventListener('hidden.bs.modal', function devolverFoco() {
-            botonNuevaTarea.focus();
-        }, { once: true });
-
-        if (elementoModal.contains(document.activeElement)) {
-            document.activeElement.blur();
+            taskManager.render();
+            taskManager.save();
+        },
+        onEliminarTarea: function (taskId) {
+            taskManager.deleteTask(taskId);
+            taskManager.save();
+            taskManager.render();
         }
-
-        instanciaModal.hide();
-    }
-});
+    });
+}
 
 function renderizarTareas() {
     contenedorTareas.innerHTML = '';
@@ -109,10 +87,16 @@ function renderizarTareas() {
                     <span><i class="bi bi-calendar3"></i>${tarea.dueDate}</span>
                     <span><i class="bi bi-person"></i>Andres F.</span>
                 </div>
-                <button type="button" class="btn btn-delete-task delete-button" aria-label="Eliminar ${tarea.name}">
-                    <i class="bi bi-trash3"></i>
-                    <span>Eliminar</span>
-                </button>
+                <div class="task-actions">
+                    <button type="button" class="btn btn-view-task view-button" aria-label="Ver tarea completa ${tarea.name}">
+                        <i class="bi bi-eye"></i>
+                        <span>Ver tarea</span>
+                    </button>
+                    <button type="button" class="btn btn-delete-task delete-button" aria-label="Eliminar ${tarea.name}">
+                        <i class="bi bi-trash3"></i>
+                        <span>Eliminar</span>
+                    </button>
+                </div>
             </div>
         </div>
         `;
@@ -135,7 +119,7 @@ function renderizarTareas() {
 
             columnaTarea.classList.toggle('task-completed', checkbox.checked);
             columnaTarea.classList.toggle('is-completed', checkbox.checked);
-            saveTasks();
+            taskManager.save();
         });
 
         if (tarea.status === 'COMPLETADA') {
@@ -148,6 +132,45 @@ function renderizarTareas() {
 }
 
 contenedorTareas.addEventListener('click', function (event) {
+    const viewButton = event.target.closest('.view-button');
+    if (viewButton) {
+        const taskCard = viewButton.closest('[data-task-id]');
+        if (!taskCard) return;
+
+        const taskId = Number(taskCard.dataset.taskId);
+        const task = taskManager.tasks.find(function (currentTask) {
+            return currentTask.id === taskId;
+        });
+
+        if (!task) return;
+
+        document.querySelector('#viewTaskModalLabel').textContent = task.name;
+        document.querySelector('#viewTaskDesc').textContent = task.description;
+        document.querySelector('#viewTaskDate').textContent = task.dueDate;
+
+        const viewCategory = document.querySelector('#viewTaskCategory');
+        viewCategory.textContent = task.category;
+        let badgeClass = 'bg-secondary';
+        if (task.category === 'Urgente') badgeClass = 'bg-danger';
+        else if (task.category === 'Estudio') badgeClass = 'bg-success';
+        else if (task.category === 'Personal') badgeClass = 'bg-info';
+        else if (task.category === 'Trabajo') badgeClass = 'bg-primary';
+        viewCategory.className = `badge view-modal-badge ${badgeClass} text-white`;
+
+        const viewStatus = document.querySelector('#viewTaskStatus');
+        if (task.status === 'COMPLETADA') {
+            viewStatus.textContent = 'Completada';
+            viewStatus.className = 'badge view-modal-badge badge-status-completed';
+        } else {
+            viewStatus.textContent = 'Por hacer';
+            viewStatus.className = 'badge view-modal-badge badge-status-pending';
+        }
+
+        const viewModal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#viewTaskModal'));
+        viewModal.show();
+        return;
+    }
+
     const deleteButton = event.target.closest('.delete-button');
 
     if (!deleteButton) {
@@ -169,24 +192,12 @@ contenedorTareas.addEventListener('click', function (event) {
         return;
     }
 
-    if (task.status !== 'COMPLETADA') {
-        return;
-    }
-
     document.querySelector('#deleteTaskName').textContent = task.name;
     document.querySelector('#confirmDeleteTask').dataset.taskId = taskId;
     const deleteModal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#deleteTaskModal'));
     deleteModal.show();
 });
 
-document.querySelector('#confirmDeleteTask').addEventListener('click', function (event) {
-    const taskId = Number(event.currentTarget.dataset.taskId);
-
-    if (taskManager.deleteTask(taskId)) {
-        saveTasks();
-        renderizarTareas();
-        bootstrap.Modal.getInstance(document.querySelector('#deleteTaskModal')).hide();
-    }
-});
-
-renderizarTareas();
+taskManager.render = renderizarTareas;
+taskManager.render();
+iniciarModales();

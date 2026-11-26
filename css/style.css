@@ -193,6 +193,12 @@ body {
     font-size: 0.88rem;
     line-height: 1.45;
     margin: 0.35rem 0 0.65rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .task-meta {
@@ -232,11 +238,38 @@ body {
     border-color: transparent;
 }
 
-.btn-delete-task {
-    display: none;
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.btn-view-task {
+    display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    margin-top: 0.75rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    background-color: transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-view-task:hover,
+.btn-view-task:focus-visible {
+    background-color: var(--bg-card-hover);
+    border-color: var(--border-color-hover);
+    color: var(--text-primary);
+}
+
+.btn-delete-task {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     padding: 0.35rem 0.65rem;
     border: 1px solid rgba(220, 53, 69, 0.45);
     border-radius: var(--border-radius-sm);
@@ -245,55 +278,11 @@ body {
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.is-completed .btn-delete-task {
-    display: inline-flex;
-}
-
 .btn-delete-task:hover,
 .btn-delete-task:focus-visible {
     background-color: rgba(220, 53, 69, 0.14);
     border-color: #dc3545;
     color: #ffb0b8;
-}
-
-.delete-modal-copy {
-    color: var(--text-secondary);
-    margin: 0.9rem 0 0.4rem;
-    overflow-wrap: anywhere;
-}
-
-.delete-modal-copy strong {
-    color: var(--text-primary);
-}
-
-.delete-modal-note {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin: 0;
-}
-
-.btn-cancel-delete {
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-}
-
-.btn-cancel-delete:hover {
-    color: var(--text-primary);
-    background-color: var(--bg-card-hover);
-    border-color: var(--border-color-hover);
-}
-
-.btn-confirm-delete {
-    color: #fff;
-    background-color: #b02a37;
-    border: 1px solid #b02a37;
-}
-
-.btn-confirm-delete:hover,
-.btn-confirm-delete:focus-visible {
-    color: #fff;
-    background-color: #92232e;
-    border-color: #92232e;
 }
 
 @media (max-width: 575.98px) {
@@ -441,46 +430,4 @@ body {
     line-height: 1.45;
 }
 
-/* Modal de Nueva Tarea */
-.custom-modal {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-xl);
-    color: var(--text-primary);
-}
 
-.custom-modal .form-control,
-.custom-modal .form-select {
-    background-color: var(--bg-sidebar);
-    border-color: var(--border-color);
-    color: var(--text-primary);
-}
-
-.custom-modal .form-control:focus,
-.custom-modal .form-select:focus {
-    background-color: var(--bg-sidebar);
-    border-color: var(--border-color-hover);
-    color: var(--text-primary);
-    box-shadow: none;
-}
-
-.custom-modal input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(0.8);
-    cursor: pointer;
-}
-
-.btn-save-task {
-    background-color: var(--primary-purple);
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.95rem;
-    padding: 0.65rem;
-    border-radius: var(--border-radius-md);
-    border: none;
-    transition: background-color 0.2s ease;
-}
-
-.btn-save-task:hover {
-    background-color: #5345b5;
-    color: #fff;
-}
