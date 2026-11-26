@@ -35,23 +35,26 @@ class TaskManager {
     }
 
     deleteTask(taskId) {
-        const task = this.tasks.find(function (currentTask) {
-            return currentTask.id === taskId;
-        });
-
-        if (!task || task.status !== 'COMPLETADA') {
-            return false;
-        }
-
+        const idToNumber = Number(taskId);
         const newTasks = [];
 
         for (let currentTask of this.tasks) {
-            if (currentTask.id !== taskId) {
+            if (currentTask.id !== idToNumber) {
                 newTasks.push(currentTask);
             }
         }
 
         this.tasks = newTasks;
         return true;
+    }
+
+    save() {
+        localStorage.setItem('taskPlannerTasks', JSON.stringify(this.tasks));
+    }
+
+    render() {
+        if (typeof renderizarTareas === 'function') {
+            renderizarTareas();
+        }
     }
 }

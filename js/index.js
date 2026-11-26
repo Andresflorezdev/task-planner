@@ -42,7 +42,7 @@ const tareasIniciales = [
 ];
 
 function saveTasks() {
-    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(taskManager.tasks));
+    taskManager.save();
 }
 
 function loadTasks() {
